@@ -203,6 +203,11 @@ nav.cLeftNavContainer ul li.current-inner-sub a {
   transition: all 0.5s ease 0s;
   /* cursor: pointer; */
 }
+
+ul.cMainLeftNav a:visited {
+  color: #464646 !important;
+}
+
 /* nav.cLeftNavContainer ul li::after {
     background-color: seagreen;
     } */
