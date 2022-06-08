@@ -1,36 +1,39 @@
-import fs from 'fs';
-import matter from 'gray-matter';
+import fs from "fs";
+import matter from "gray-matter";
 
+import React from "react";
+import ReactMarkdown from "react-markdown";
+import ReactDom from "react-dom";
 
-import React from 'react'
-import ReactMarkdown from 'react-markdown'
-import ReactDom from 'react-dom'
+import Layout from "../../../layouts/layout-docs";
+import { Container, Col } from "react-bootstrap";
 
-import Layout from '../../../layouts/layout-docs';
-
-import Head from 'next/head';
+import Head from "next/head";
 // import Script from 'next/script';
-import Grid from '@mui/material/Grid';
+import Grid from "@mui/material/Grid";
 
 export async function getStaticPaths() {
   // console.log("booooo");
   // Retrieve all our slugs
-  const files = fs.readdirSync('bbe');
+  const files = fs.readdirSync("swan-lake/by-example");
 
   const paths = files.map((fileName) => ({
     params: {
-      slug: fileName.replace('.html', ''),
+      slug: fileName.replace(".html", ""),
     },
   }));
 
   return {
     paths,
-    fallback: false, 
+    fallback: false,
   };
 }
 
 export async function getStaticProps({ params: { slug } }) {
-  const fileName = fs.readFileSync(`bbe/${slug}.html`, 'utf-8');
+  const fileName = fs.readFileSync(
+    `swan-lake/by-example/${slug}.html`,
+    "utf-8"
+  );
   const { data: frontmatter, content } = matter(fileName);
   return {
     props: {
@@ -40,67 +43,23 @@ export async function getStaticProps({ params: { slug } }) {
   };
 }
 
-
 export default function PostPage({ frontmatter, content }) {
-  
   return (
-      <Layout>
-        <Head>
-        <script async src="https://unpkg.com/shiki" />
-        <script async src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <Layout>
+      <Col sm={9} xxl={8} className="mdContent">
+        <Container>
+          {/* <div className="topRow">
+            <Col xs={11}>
+              <h1>{frontmatter.title}</h1>
+            </Col>
+            <Col xs={1} className="gitIcon">
+              <img src="/images/github.svg" height={20} width={20} />
+            </Col>
+          </div> */}
 
-        <link rel="stylesheet" href="https://yasithd.github.io/ballerina-dev-website/css/shiki.css"/>
-        <link rel="stylesheet" href="https://yasithd.github.io/ballerina-dev-website/css/custom-highlight.css"/>
-      </Head>
-      <Grid container spacing={0} flexShrink={0}>
-        <Grid item xs={9} className='content'>
-          <div dangerouslySetInnerHTML={{__html: content}}/>
-        </Grid>
-        <Grid item xs={3} className="pageNav">
-        <nav id="sidebar" className="sidebar" aria-label="Table of contents">
-            <div className="sidebar-scrollbox">
-                <ul className='pageNav'>
-                  <li>Hello World</li>
-                  <li>Hello World Service</li>
-                </ul>
-            </div>
-            <div id="sidebar-resize-handle" className="sidebar-resize-handle"></div>
-        </nav>
-        </Grid>
-      </Grid>
-      
-      
-      
-      
-{/* 
-      <Script
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-          $( "pre > code" ).each(function() {
-            var langClass = $(this).attr('class');
-            
-            var myArray = langClass.split("-");
-            var myLang = myArray[1];
-
-            shiki
-            .getHighlighter({
-              theme: 'nord',
-              langs: ['bash','ballerina']
-
-            })
-            .then(highlighter => {
-              var code = highlighter.codeToHtml($(this).html(), { lang: myLang });
-              $(code).insertAfter($(this).parent().prev());
-              $(this).parent().remove();
-            })
-          });
-        `,
-        }}
-      /> */}
-          
-      </Layout>
-      
-  
+          <div dangerouslySetInnerHTML={{ __html: content }} />
+        </Container>
+      </Col>
+    </Layout>
   );
 }
